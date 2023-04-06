@@ -1,2 +1,3 @@
 # NLP_for_clinical_notes
 We are using Advanced NLP methods using BERT model to extract features and classify the data present in the notes
+This model will be deployed using web app soon...
