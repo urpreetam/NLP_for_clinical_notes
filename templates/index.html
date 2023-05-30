@@ -1,17 +1,240 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Text Input App</title>
-</head>
-<body>
-  <h1>Text Input App</h1>
-  
-  <form method="post">
-    <label for="userInput">Enter Text:</label>
-    <input type="text" id="userInput" name="user_input" placeholder="Type here...">
-    <button type="submit">Submit</button>
-  </form>
+<html lang="en">
 
-  <p>{{ output }}</p>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Med-Detect (Beta)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            color: rgb(232, 236, 239);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            text-align: center;
+            height: 100vh;
+            background-color: #343541;
+        }
+
+        .sidebar {
+            text-align: left;
+            background-color: #1f2123;
+            padding: 1%;
+            width: 23.5%;
+        }
+
+        .main {
+            text-align: center;
+            margin-top: 4%;
+            position: relative;
+            width: 76.5%;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            position: absolute;
+            bottom: 10%;
+            left: 16%;
+            width: 66%;
+            background-color: #40414f;
+            padding: 1.2%;
+            border-radius: 5px;
+        }
+
+        textarea {
+            color: rgb(232, 236, 239);
+            outline: none;
+            border: 0;
+            width: 90%;
+            font-family: "Roboto";
+            font-size: 1em;
+            resize: none;
+            overflow: hidden;
+            background-color: transparent;
+            scrollbar-width: none;
+        }
+
+        textarea::-webkit-scrollbar {
+            display: none;
+        }
+
+        button {
+            color: rgb(232, 236, 239);
+            cursor: pointer;
+            border: 0;
+            background-color: transparent;
+        }
+
+        ::placeholder {
+            color: #b1b2c3c2;
+        }
+
+        .new {
+            border: 1px solid #b1b2c3c2;
+            padding: 5%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .new:hover {
+            background-color: rgb(39, 41, 43);
+        }
+
+        .soft {
+            color: #b1b2c3c2;
+            font-size: 0.9em;
+            margin: 6% 5%;
+            font-weight: 500;
+            display: flex;
+            align-items: start;
+        }
+
+        .eg {
+            border: 0;
+        }
+
+        .limits {
+            padding: 5%;
+        }
+
+        #output {
+            display: none;
+            margin-top: 5%;
+            padding: 5%;
+            color: #b1b2c3c2;
+            background-color: #40414f;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        a,
+        a:visited {
+            color: rgba(0, 255, 255, 0.653);
+        }
+    </style>
+</head>
+
+<body class="flex-container">
+    <div class="sidebar">
+        <div class="new">+&nbsp;&nbsp;&nbsp;New Chat</div>
+        <div class="soft">Examples</div>
+        <div class="new eg" id="0"><i class="fa fa-bookmark" aria-hidden="true"></i></div>
+        <div class="new eg" id="1"><i class="fa fa-bookmark" aria-hidden="true"></i></div>
+        <div class="new eg" id="2"><i class="fa fa-bookmark" aria-hidden="true"></i></div>
+        <div class="soft">Limitations</div>
+        <div class="limits">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            &nbsp;&nbsp;Predicts five major specialities
+        </div>
+        <div class="limits">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            &nbsp;&nbsp;Inadvertently inherited biases
+        </div>
+        <div class="limits">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            &nbsp;&nbsp;Lack of interpretability
+        </div>
+        <br><br><hr>
+        <div class="soft">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            &nbsp;&nbsp;<div>Research project presented at HealthCoder-2023</div>
+        </div>
+    </div>
+    <div class="main">
+        <h1>Med-Detect AI</h1>
+        <div style="font-size: 1.2em;">NLP powered Clinical Specialty Predictor</div>
+        <p id="output"> {{ output }} </p>
+        <form onsubmit="handleSubmit(event)">
+            <textarea rows='1' name="user_input" placeholder="Enter your clinical note..."></textarea>
+            <button type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+        </form>
+    </div>
+    <script>
+        var input = document.querySelector('textarea')
+        var output = document.querySelector('#output')
+        const ht = document.querySelector('.main').offsetHeight / 1.8
+        function handleSubmit(e) {
+            e.preventDefault()
+            input.value = ''
+            input.placeholder = 'Loading results, please wait...'
+            input.style.color = 'transparent'
+            document.querySelector('button').style.display = 'none'
+            var formData = new FormData(document.querySelector('form'))
+            fetch('/', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => response.text())
+              .then(data => change(data))
+        }
+        const autoResize = () => {
+            input.style.height = 'auto'
+            if (input.scrollHeight < ht) {
+                input.style.height = input.scrollHeight + 'px'
+            } else {
+                input.style.height = ht + 'px'
+                input.style.overflowY = 'scroll'
+            }
+        }
+        input.addEventListener('input', autoResize)
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault()
+                handleSubmit(event)
+            }
+        })
+        const newChat = document.querySelector('.new')
+        newChat.addEventListener("click", () => {
+            location.reload() 
+        })
+        const labels = ['Neurology', 'Urology', 'Radiology', 'Orthopedic', 'Gastroenterology']
+        const example_labels = ['Neurology', 'Radiology', 'Urology']
+        const examples = [
+            "Confusion and slurred speech.,HX , (primarily obtained from boyfriend): This 31 y/o RHF experienced a flu-like illness 6-8 weeks prior to presentation. 3-4 weeks prior to presentation, she was found passed out in bed, and when awoken appeared confused, and lethargic. She apparently recovered within 24 hours. For two weeks prior to presentation she demonstrated emotional lability, uncharacteristic of her ( outbursts of anger and inappropriate laughter). She left a stove on.,She began slurring her speech 2 days prior to admission. On the day of presentation she developed right facial weakness and began stumbling to the right. She denied any associated headache, nausea, vomiting, fever, chills, neck stiffness or visual change. There was no history of illicit drug/ETOH use or head trauma.,PMH:, Migraine Headache.,FHX: , Unremarkable.,SHX: ,Divorced. Lives with boyfriend. 3 children alive and well. Denied tobacco/illicit drug use. Rarely consumes ETOH.,ROS:, Irregular menses.,EXAM: ,BP118/66.  HR83. RR 20. T36.8C.,MS: Alert and oriented to name only. Perseverative thought processes. Utilized only one or two word answers/phrases. Non-fluent. Rarely followed commands. Impaired writing of name.,CN: Flattened right nasolabial fold only.,Motor: Mild weakness in RUE manifested by pronator drift. Other extremities were full strength.,Sensory: withdrew to noxious stimulation in all 4 extremities.,Coordination: difficult to assess.,Station: Right pronator drift.,Gait: unremarkable.,Reflexes: 2/2BUE, 3/3BLE, Plantars were flexor bilaterally.,General Exam: unremarkable.,INITIAL STUDIES:, CBC, GS, UA, PT, PTT, ESR, CRP, EKG were all unremarkable. Outside HCT showed hypodensities in the right putamen, left caudate, and at several subcortical locations (not specified).,COURSE: ,MRI Brian Scan, 2/11/92 revealed an old lacunar infarct in the right basal ganglia, edema within the head of the left caudate nucleus suggesting an acute ischemic event, and arterial enhancement of the left MCA distribution suggesting slow flow. The latter suggested a vasculopathy such as Moya Moya, or fibromuscular dysplasia. HIV, ANA, Anti-cardiolipin Antibody titer, Cardiac enzymes, TFTs, B12, and cholesterol studies were unremarkable.,She underwent a cerebral angiogram on 2/12/92. This revealed an occlusion of the left MCA just distal to its origin. The distal distribution of the left MCA filled on later films through collaterals from the left ACA. There was also an occlusion of the right MCA just distal to the temporal branch. Distal branches of the right MCA filled through collaterals from the right ACA. No other vascular abnormalities were noted. These findings were felt to be atypical but nevertheless suspicious of a large caliber vasculitis such as Moya Moya disease. She was subsequently given this diagnosis. Neuropsychologic testing revealed widespread cognitive dysfunction with particular impairment of language function. She had long latencies responding and understood only simple questions. Affect was blunted and there was distinct lack of concern regarding her condition. She was subsequently discharged home on no medications.,In 9/92 she was admitted for sudden onset right hemiparesis and mental status change. Exam revealed the hemiparesis and in addition she was found to have significant neck lymphadenopathy. OB/GYN exam including cervical biopsy, and abdominal/pelvic CT scanning revealed stage IV squamous cell cancer of the cervix. She died 9/24/92 of cervical cancer.",
+            "Right arm pain, numbness and tingling.,FINDINGS:,Vertebral alignment and bone marrow signal characteristics are unremarkable. The C2-3 and C3-4 disk levels appear unremarkable.,At C4-5, broad based disk/osteophyte contacts the ventral surface of the spinal cord and may mildly indent the cord contour. A discrete cord signal abnormality is not identified. There may also be some narrowing of the neuroforamina at this level.,At C5-6, central disk-osteophyte contacts and mildly impresses on the ventral cord contour. Distinct neuroforaminal narrowing is not evident.,At C6-7, mild diffuse disk-osteophyte impresses on the ventral thecal sac and contacts the ventral cord surface. Distinct cord compression is not evident. There may be mild narrowing of the neuroforamina at his level.,A specific abnormality is not identified at the C7-T1 level.,IMPRESSION:,Disk/osteophyte at C4-5 through C6-7 with contact and may mildly indent the ventral cord contour at these levels. Some possible neuroforaminal narrowing is also noted at levels as stated above.",
+            "This is a 55-year-old female with a history of stroke, who presents today for followup of frequency and urgency with urge incontinence.  This has been progressively worsening, and previously on VESIcare with no improvement.  She continues to take Enablex 50 mg and has not noted any improvement of her symptoms.  The nursing home did not do a voiding diary.  She is accompanied by her power of attorney.  No dysuria, gross hematuria, fever or chills.  No bowel issues and does use several Depends a day.,Recent urodynamics in April 2008, here in the office, revealed significant detrusor instability with involuntary urinary incontinence and low bladder volumes, and cystoscopy was unremarkable.,IMPRESSION:  ,Persistent frequency and urgency, in a patient with a history of neurogenic bladder and history of stroke.  This has not improved on VESIcare as well as Enablex.  Options are discussed.,We discussed other options of pelvic floor rehabilitation, InterStim by Dr. X, as well as more invasive procedure.  The patient and the power of attorney would like him to proceed with meeting Dr. X to discuss InterStim, which was briefly reviewed here today and brochure for this is provided today.  Prior to discussion, the nursing home will do an extensive voiding diary for one week, while she is on Enablex, and if this reveals no improvement, the patient will be started on Ventura twice daily and prescription is provided.  They will see Dr. X with a prior voiding diary, which is again discussed.  All questions answered.,PLAN:,  As above, the patient will be scheduled to meet with Dr. X to discuss option of InterStim, and will be accompanied by her power of attorney.  In the meantime, Sanctura prescription is provided, and voiding diaries are provided.  All questions answered."
+        ]
+        const ids = [0, 1, 2]
+        ids.map(id => {
+            const eg = document.getElementById(id)
+            eg.addEventListener("click", () => {
+                input.value = examples[id]
+                autoResize()
+            })
+            eg.innerHTML = `<i class="fa fa-bookmark" aria-hidden="true"></i> &nbsp; ${example_labels[id]} : ${examples[id].substring(0, 15 + id)}...`
+        })
+
+        function change(data) {
+            output.style.display = "block"
+            document.querySelector('form').style.display = "none"
+            labels.map(label => {
+                if (data == label) {
+                    const wiki = `https://en.wikipedia.org/wiki/${label}`
+                    const docs = `https://www.google.com/search?q=${label}+specialists+near+me`
+                    output.innerHTML =
+                        `<h2>${label}</h2><br><br>
+                        <div class="left">
+                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                            &nbsp;&nbsp Know more about ${label} and its diagnosis : 
+                            <a href="${wiki}"" target="_blank">Click here</a>
+                        </div><br><br>
+                        <div class="left">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            &nbsp;&nbsp;&nbsp; Find ${label} specialist doctors near you : 
+                            <a href="${docs}"" target="_blank">Click here</a>
+                        </div>`
+                }
+            })
+        }
+    </script>
 </body>
 </html>
