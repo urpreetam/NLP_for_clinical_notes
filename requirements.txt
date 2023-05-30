@@ -1,0 +1,7 @@
+pandas
+numpy
+transformers
+tensorflow
+scikit-learn
+tqdm
+# -e .
