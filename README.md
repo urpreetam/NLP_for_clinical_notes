@@ -47,6 +47,9 @@ The RoBERTa Model repository provides an introduction to the RoBERTa model, a pr
 ## Why RoBERTa Model for Clinical Notes? 🏥
 
 1.Clinical notes are a crucial source of information in the healthcare domain.
+
 2.It containing valuable insights for medical diagnosis, treatment, and research.
+
 3.By training the RoBERTa model on clinical notes, it can learn to understand the nuances of medical language and effectively extract relevant information. 
+
 4.The RoBERTa model's large-scale pre-training enables it to capture the complexities of clinical text, leading to improved performance in medical NLP tasks. 💡
