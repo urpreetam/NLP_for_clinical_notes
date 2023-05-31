@@ -1,14 +1,18 @@
-# NLP_for_clinical_notes
-We are using Advanced NLP methods using BERT model to extract features and classify the data present in the notes
-# NLP Pipeline 🚀
+# Med-Detect AI
+Advanced NLP methods using RoBERTa model to extract features and classify the data present in the medical notes into the 5 major medical specialities
+- Neurology 🧠
+- Urology 🧎‍♂️
+- Radiology 📹
+- Orthopedic 🦴
+- Gastroenterology 🚽
 
-A basic Natural Language Processing (NLP) pipeline for text data processing and preparation. 📚
+## NLP Pipeline ⚒️
 
-## Overview 🔍
+A basic Natural Language Processing (NLP) pipeline for text data processing and preparation covers essential steps such as text cleaning, tokenization, normalization, stopword removal, POS tagging, feature extraction, and data splitting. 📋
 
-The NLP Pipeline repository provides a step-by-step guide on how to preprocess raw text data for machine learning and deep learning algorithms. 🚀 It covers essential steps such as text cleaning, tokenization, normalization, stopword removal, POS tagging, feature extraction, and data splitting. 📋
+![Alt text](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*CbzCcP3XFtYVJmWowZLugQ.png)
 
-## Pipeline Steps ⚙️
+### Pipeline Steps ⚙️
 
 The NLP pipeline consists of the following steps:
 
@@ -26,25 +30,18 @@ The NLP pipeline consists of the following steps:
 
 7. ⚖️ **Data Splitting**: Divide the preprocessed text data into training, validation, and testing sets for model training and evaluation.
 
-## Basic NLP Pipeline-
-https://miro.medium.com/v2/resize:fit:1400/format:webp/1*CbzCcP3XFtYVJmWowZLugQ.png
+## RoBERTa Model 📖
 
-# RoBERTa Model 📖
+The RoBERTa Model repository provides an introduction to the RoBERTa model, a pre-trained language model based on the BERT architecture. It offers improvements in training methodology and achieves state-of-the-art performance on various NLP tasks. The repository includes examples of fine-tuning RoBERTa for specific applications. 📚
 
-A repository showcasing the RoBERTa (Robustly Optimized BERT approach) model for natural language processing. 🤖
-
-## Overview 🔍
-
-The RoBERTa Model repository provides an introduction to the RoBERTa model, a pre-trained language model based on the BERT architecture. 🚀 It offers improvements in training methodology and achieves state-of-the-art performance on various NLP tasks. The repository includes examples of fine-tuning RoBERTa for specific applications. 📚
-
-## RoBERTa Model Features 🚀
+### Model Features 🚀
 
 - Enhanced language representation compared to BERT.
 - Achieves state-of-the-art performance on various NLP tasks.
 - Supports fine-tuning for specific applications.
 - Robust and optimized for diverse natural language processing tasks.
 
-## Why RoBERTa Model for Clinical Notes? 🏥
+### Why this model for Clinical Notes? 🏥
 
 1.Clinical notes are a crucial source of information in the healthcare domain.
 
